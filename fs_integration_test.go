@@ -1,4 +1,6 @@
-package fs
+// +build integration
+
+package fs_test
 
 import (
 	"context"
@@ -6,6 +8,9 @@ import (
 	"path/filepath"
 	"testing"
 
+	fs "github.com/nhatthm/plugin-registry-fs"
+	fsCtx "github.com/nhatthm/plugin-registry/context"
+	"github.com/nhatthm/plugin-registry/installer"
 	"github.com/nhatthm/plugin-registry/plugin"
 	"github.com/spf13/afero"
 	"github.com/stretchr/testify/assert"
@@ -28,15 +33,15 @@ func TestFsInstaller_Install_Success(t *testing.T) {
 
 	testCases := []struct {
 		scenario string
-		file     string
+		path     string
 	}{
 		{
 			scenario: "folder",
-			file:     "resources/fixtures/fs/folder",
+			path:     "resources/fixtures/fs/folder",
 		},
 		{
 			scenario: "file",
-			file:     "resources/fixtures/fs/file",
+			path:     "resources/fixtures/fs/file",
 		},
 	}
 
@@ -47,21 +52,24 @@ func TestFsInstaller_Install_Success(t *testing.T) {
 
 			dest := t.TempDir()
 
-			fs := afero.NewOsFs()
-			i := NewFsInstaller(fs)
+			osFs := afero.NewOsFs()
+			ctx := fsCtx.WithFs(context.Background(), osFs)
+			i, err := installer.Find(ctx, tc.path)
+			require.NoError(t, err)
+			assert.IsType(t, &fs.Installer{}, i)
 
-			result, err := i.Install(context.Background(), dest, tc.file)
+			result, err := i.Install(context.Background(), dest, tc.path)
 			require.NoError(t, err)
 
 			assert.Equal(t, expectedResult, result)
 
 			file := filepath.Join(dest, result.Name, result.Name)
 
-			info, err := fs.Stat(file)
+			info, err := osFs.Stat(file)
 			require.NoError(t, err)
 			assert.Equal(t, os.FileMode(0755), info.Mode())
 
-			data, err := afero.ReadFile(fs, file)
+			data, err := afero.ReadFile(osFs, file)
 			require.NoError(t, err)
 
 			expected := "#!/bin/bash\n"
