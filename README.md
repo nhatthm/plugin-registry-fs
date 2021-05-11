@@ -31,15 +31,16 @@ This installer supports installing:
 The source must be in this format:
 
 ```
-./my-plugin
+./my-project/
 ├── .plugin.registry.yaml
-└── (plugin files) 
+└── my-plugin/
+    └── (plugin files) 
 ```
 
 For example, if source is an archive, it should be:
 
 ```
-./my-plugin
+./my-project/
 ├── .plugin.registry.yaml
 └── my-plugin-1.0.0-darwin-amd64.tar.gz 
 ```
