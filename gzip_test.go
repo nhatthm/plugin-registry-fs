@@ -366,7 +366,7 @@ func TestInstallGzip_Error(t *testing.T) {
 				fs.On("RemoveAll", mock.Anything).
 					Return(nil)
 
-				fs.On("MkdirAll", mock.Anything, os.FileMode(0755)).
+				fs.On("MkdirAll", mock.Anything, os.FileMode(0o755)).
 					Return(errors.New("mkdir error"))
 			}),
 			path:          "/tmp/my-plugin.tar.gz",
@@ -386,13 +386,13 @@ func TestInstallGzip_Error(t *testing.T) {
 				fs.On("RemoveAll", mock.Anything).
 					Return(nil)
 
-				fs.On("MkdirAll", mock.Anything, os.FileMode(0755)).Once().
+				fs.On("MkdirAll", mock.Anything, os.FileMode(0o755)).Once().
 					Return(nil)
 
 				fs.On("Stat", mock.Anything).
 					Return(nil, os.ErrNotExist)
 
-				fs.On("MkdirAll", mock.Anything, os.FileMode(0755)).
+				fs.On("MkdirAll", mock.Anything, os.FileMode(0o755)).
 					Return(errors.New("could not create path"))
 			}),
 			path:          "/tmp/my-plugin.tar.gz",
@@ -412,13 +412,13 @@ func TestInstallGzip_Error(t *testing.T) {
 				fs.On("RemoveAll", mock.Anything).
 					Return(nil)
 
-				fs.On("MkdirAll", mock.Anything, os.FileMode(0755)).Once().
+				fs.On("MkdirAll", mock.Anything, os.FileMode(0o755)).Once().
 					Return(nil)
 
 				fs.On("Stat", mock.Anything).
 					Return(nil, os.ErrNotExist)
 
-				fs.On("MkdirAll", mock.Anything, os.FileMode(0755)).
+				fs.On("MkdirAll", mock.Anything, os.FileMode(0o755)).
 					Return(nil)
 
 				fs.On("OpenFile", mock.Anything, mock.Anything, mock.Anything).Once().
@@ -441,7 +441,7 @@ func TestInstallGzip_Error(t *testing.T) {
 				fs.On("RemoveAll", mock.Anything).
 					Return(nil)
 
-				fs.On("MkdirAll", mock.Anything, os.FileMode(0755)).Once().
+				fs.On("MkdirAll", mock.Anything, os.FileMode(0o755)).Once().
 					Return(nil)
 			}),
 			path:          "/tmp/my-plugin.tar.gz",

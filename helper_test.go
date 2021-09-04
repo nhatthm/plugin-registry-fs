@@ -62,7 +62,7 @@ func TestCreatePathIfNotExists(t *testing.T) {
 				fs.On("Stat", "/tmp").
 					Return(nil, os.ErrNotExist)
 
-				fs.On("MkdirAll", "/tmp", os.FileMode(0755)).
+				fs.On("MkdirAll", "/tmp", os.FileMode(0o755)).
 					Return(errors.New("mkdir error"))
 			}),
 			expectedError: "mkdir error",
@@ -73,7 +73,7 @@ func TestCreatePathIfNotExists(t *testing.T) {
 				fs.On("Stat", "/tmp").
 					Return(nil, os.ErrNotExist)
 
-				fs.On("MkdirAll", "/tmp", os.FileMode(0755)).
+				fs.On("MkdirAll", "/tmp", os.FileMode(0o755)).
 					Return(nil)
 			}),
 		},
@@ -117,7 +117,7 @@ func TestRecreatePath(t *testing.T) {
 				fs.On("RemoveAll", "/tmp").
 					Return(nil)
 
-				fs.On("MkdirAll", "/tmp", os.FileMode(0755)).
+				fs.On("MkdirAll", "/tmp", os.FileMode(0o755)).
 					Return(nil)
 			}),
 		},
@@ -143,11 +143,11 @@ func TestInstallFile_OpenFail(t *testing.T) {
 	t.Parallel()
 
 	fs := aferomock.MockFs(func(fs *aferomock.Fs) {
-		fs.On("OpenFile", "/tmp/temp.txt", os.O_CREATE|os.O_RDWR, os.FileMode(0755)).
+		fs.On("OpenFile", "/tmp/temp.txt", os.O_CREATE|os.O_RDWR, os.FileMode(0o755)).
 			Return(nil, errors.New("open error"))
 	})(t)
 
-	err := installStream(fs, "/tmp/temp.txt", nil, os.FileMode(0755))
+	err := installStream(fs, "/tmp/temp.txt", nil, os.FileMode(0o755))
 	expected := `open error`
 
 	assert.EqualError(t, err, expected)
@@ -157,13 +157,13 @@ func TestInstallFile_Success(t *testing.T) {
 	t.Parallel()
 
 	fs := afero.NewMemMapFs()
-	err := installStream(fs, "/tmp/temp.txt", strings.NewReader("hello world"), os.FileMode(0755))
+	err := installStream(fs, "/tmp/temp.txt", strings.NewReader("hello world"), os.FileMode(0o755))
 	require.NoError(t, err)
 
 	fi, err := fs.Stat("/tmp/temp.txt")
 	require.NoError(t, err)
 
-	assert.Equal(t, os.FileMode(0755), fi.Mode())
+	assert.Equal(t, os.FileMode(0o755), fi.Mode())
 
 	content, err := afero.ReadFile(fs, "/tmp/temp.txt")
 	require.NoError(t, err)

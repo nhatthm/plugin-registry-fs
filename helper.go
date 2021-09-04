@@ -45,7 +45,7 @@ func openPluginFile(fs afero.Fs, path string) (os.FileInfo, afero.File, error) {
 
 func createPathIfNotExists(fs afero.Fs, path string) error {
 	if _, err := fs.Stat(path); err != nil {
-		if err := fs.MkdirAll(path, 0755); err != nil {
+		if err := fs.MkdirAll(path, 0o755); err != nil {
 			return err
 		}
 	}
@@ -58,5 +58,5 @@ func recreatePath(fs afero.Fs, path string) error {
 		return err
 	}
 
-	return fs.MkdirAll(path, 0755)
+	return fs.MkdirAll(path, 0o755)
 }

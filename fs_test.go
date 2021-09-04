@@ -290,7 +290,7 @@ func TestFsInstaller_Install_Error(t *testing.T) {
 				fs.On("RemoveAll", mock.Anything).
 					Return(nil)
 
-				fs.On("MkdirAll", mock.Anything, os.FileMode(0755)).
+				fs.On("MkdirAll", mock.Anything, os.FileMode(0o755)).
 					Return(errors.New("mkdir error"))
 			}),
 			expectedError: "could not install plugin: mkdir error",
@@ -318,7 +318,7 @@ func TestFsInstaller_Install_Error(t *testing.T) {
 				fs.On("RemoveAll", mock.Anything).
 					Return(nil)
 
-				fs.On("MkdirAll", mock.Anything, os.FileMode(0755)).
+				fs.On("MkdirAll", mock.Anything, os.FileMode(0o755)).
 					Return(nil)
 
 				fs.On("Stat", "/tmp/my-plugin").

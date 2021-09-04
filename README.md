@@ -11,7 +11,7 @@ A file system installer for [plugin-registry](https://github.com/nhatthm/plugin-
 
 ## Prerequisites
 
-- `Go >= 1.15`
+- `Go >= 1.16`
 
 ## Install
 
@@ -34,7 +34,7 @@ The source must be in this format:
 ./my-project/
 ├── .plugin.registry.yaml
 └── my-plugin/
-    └── (plugin files) 
+    └── (plugin files)
 ```
 
 For example, if source is an archive, it should be:
@@ -42,7 +42,7 @@ For example, if source is an archive, it should be:
 ```
 ./my-project/
 ├── .plugin.registry.yaml
-└── my-plugin-1.0.0-darwin-amd64.tar.gz 
+└── my-plugin-1.0.0-darwin-amd64.tar.gz
 ```
 
 ## Examples
