@@ -132,8 +132,9 @@ github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORN
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0 h1:45sCR5RtlFHMR4UwH9sdQ5TC8v0qDQCHnXt+kaKSTVE=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
-github.com/nhatthm/aferocopy v1.1.0 h1:S2SH9bKjshXh9C4379pQI7XKStLf1p+tLiJStjK0rNU=
 github.com/nhatthm/aferocopy v1.1.0/go.mod h1:in+jJ4NAaxf1Pwtm8oaNysHZDiA1DvOfK2a8gKBJqCA=
+github.com/nhatthm/aferocopy v1.2.0 h1:0dylQ1+cXttiv6h1mYSRqVZ/dlhdKYGmjwGz/6t6yBI=
+github.com/nhatthm/aferocopy v1.2.0/go.mod h1:8qq8slbjSZ3Wu8cVoBVw2NrNETM8S330zS3kYGI9Pus=
 github.com/nhatthm/aferomock v0.3.0/go.mod h1:/oTcy0NDM+qQJEEOWiuiKuogilXvv/KZcdaXaP/rX3g=
 github.com/nhatthm/aferomock v0.3.1 h1:L6oGPOdm+GoJ0HDoo2XZpVq++JieZs5PBUdM/8hO8aY=
 github.com/nhatthm/aferomock v0.3.1/go.mod h1:mev14Kms7DBCX/djc5zmf57EgLgmA6k2654EzvRq1vM=
