@@ -8,7 +8,7 @@ require (
 	github.com/nhatthm/aferomock v0.3.1
 	github.com/nhatthm/plugin-registry v0.2.1
 	github.com/spf13/afero v1.8.2
-	github.com/stretchr/testify v1.7.5
+	github.com/stretchr/testify v1.8.0
 )
 
 require (
