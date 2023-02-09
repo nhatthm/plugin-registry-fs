@@ -7,7 +7,7 @@ require (
 	github.com/nhatthm/plugin-registry v0.3.0
 	github.com/spf13/afero v1.9.3
 	github.com/stretchr/testify v1.8.1
-	go.nhat.io/aferocopy/v2 v2.0.0
+	go.nhat.io/aferocopy/v2 v2.0.1
 	go.nhat.io/aferomock v0.4.0
 )
 
