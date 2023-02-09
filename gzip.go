@@ -20,7 +20,7 @@ import (
 // ErrPluginNotGzip indicates that the plugin is not a zip.
 var ErrPluginNotGzip = errors.New("plugin is not a gzip")
 
-func init() { // nolint: gochecknoinits
+func init() { //nolint: gochecknoinits
 	installer.Register("gzip", isGzipPlugin, func(fs afero.Fs) installer.Installer {
 		return NewGzipInstaller(fs)
 	})
@@ -38,13 +38,13 @@ func NewGzipInstaller(fs afero.Fs) *ArchiveInstaller {
 	return i
 }
 
-func isGzipPlugin(ctx context.Context, path string) bool {
-	_, _, err := parseGzipPath(fsCtx.Fs(ctx), path)
+func isGzipPlugin(ctx context.Context, path string) bool { //nolint: contextcheck,nolintlint
+	_, _, err := parseGzipPath(fsCtx.Fs(ctx), path) //nolint: contextcheck,nolintlint
 
 	return err == nil
 }
 
-func parseGzipPath(fs afero.Fs, path string) (string, string, error) {
+func parseGzipPath(fs afero.Fs, path string) (string, string, error) { //nolint: contextcheck,nolintlint
 	fi, err := statPlugin(fs, path)
 	if err != nil {
 		return "", "", err
@@ -69,13 +69,13 @@ func installGzip(fs afero.Fs, dst string, p plugin.Plugin, tarFile string) error
 	if err != nil {
 		return err
 	}
-	defer r.Close() // nolint: errcheck
+	defer r.Close() //nolint: errcheck
 
 	gzr, err := gzip.NewReader(r)
 	if err != nil {
 		return err
 	}
-	defer gzr.Close() // nolint: errcheck
+	defer gzr.Close() //nolint: errcheck
 
 	pluginDir := fmt.Sprintf("%s%c", p.Name, os.PathSeparator)
 	dst = filepath.Join(dst, p.Name)

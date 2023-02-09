@@ -18,7 +18,7 @@ import (
 // ErrPluginNotZip indicates that the plugin is not a zip.
 var ErrPluginNotZip = errors.New("plugin is not a zip")
 
-func init() { // nolint: gochecknoinits
+func init() { //nolint: gochecknoinits
 	installer.Register("zip", isZipPlugin, func(fs afero.Fs) installer.Installer {
 		return NewZipInstaller(fs)
 	})
@@ -36,13 +36,13 @@ func NewZipInstaller(fs afero.Fs) *ArchiveInstaller {
 	return i
 }
 
-func isZipPlugin(ctx context.Context, path string) bool {
-	_, _, err := parseZipPath(fsCtx.Fs(ctx), path)
+func isZipPlugin(ctx context.Context, path string) bool { //nolint: contextcheck,nolintlint
+	_, _, err := parseZipPath(fsCtx.Fs(ctx), path) //nolint: contextcheck,nolintlint
 
 	return err == nil
 }
 
-func parseZipPath(fs afero.Fs, path string) (string, string, error) {
+func parseZipPath(fs afero.Fs, path string) (string, string, error) { //nolint: contextcheck,nolintlint
 	fi, err := statPlugin(fs, path)
 	if err != nil {
 		return "", "", err
@@ -67,7 +67,7 @@ func installZip(fs afero.Fs, dst string, p plugin.Plugin, zipFile string) error 
 	if err != nil {
 		return err
 	}
-	defer r.Close() // nolint: errcheck
+	defer r.Close() //nolint: errcheck
 
 	zr, err := zip.NewReader(r, fi.Size())
 	if err != nil {
@@ -106,7 +106,7 @@ func extractZip(fs afero.Fs, dst, pluginDir string, zr *zip.Reader) error {
 		}
 
 		err = installStream(fs, path, src, f.FileInfo().Mode())
-		_ = src.Close() // nolint: errcheck
+		_ = src.Close() //nolint: errcheck
 
 		if err != nil {
 			return err

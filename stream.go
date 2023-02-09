@@ -8,11 +8,11 @@ import (
 )
 
 func installStream(fs afero.Fs, dest string, src io.Reader, mode os.FileMode) error {
-	out, err := fs.OpenFile(dest, os.O_CREATE|os.O_RDWR, mode)
+	out, err := fs.OpenFile(dest, os.O_CREATE|os.O_RDWR, mode) //nolint: nosnakecase
 	if err != nil {
 		return err
 	}
-	defer out.Close() // nolint: errcheck
+	defer out.Close() //nolint: errcheck
 
 	_, err = io.Copy(out, src)
 
