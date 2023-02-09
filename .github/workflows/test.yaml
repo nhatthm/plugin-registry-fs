@@ -19,15 +19,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Install Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v3
         with:
           go-version: ${{ matrix.go-version }}
 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Go cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           # In order:
           # * Module download cache
@@ -46,14 +46,14 @@ jobs:
 
       - name: Upload code coverage (unit)
         if: matrix.go-version == env.GO_LATEST_VERSION
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         with:
           file: ./unit.coverprofile
           flags: unittests-${{ runner.os }}
 
       - name: Upload code coverage (features)
         if: matrix.go-version == env.GO_LATEST_VERSION
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         with:
           file: ./features.coverprofile
           flags: featurestests-${{ runner.os }}
