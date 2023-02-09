@@ -8,11 +8,11 @@ import (
 	"strings"
 
 	"github.com/bool64/ctxd"
-	"github.com/nhatthm/aferocopy"
 	fsCtx "github.com/nhatthm/plugin-registry/context"
 	"github.com/nhatthm/plugin-registry/installer"
 	"github.com/nhatthm/plugin-registry/plugin"
 	"github.com/spf13/afero"
+	"go.nhat.io/aferocopy/v2"
 )
 
 var (
@@ -24,7 +24,7 @@ var (
 	ErrIllegalFilePath = errors.New("illegal file path")
 )
 
-func init() { // nolint: gochecknoinits
+func init() { //nolint: gochecknoinits
 	installer.Register("fs", isFsPlugin, func(fs afero.Fs) installer.Installer {
 		return NewFsInstaller(fs)
 	})
@@ -98,7 +98,7 @@ func installFs(fs afero.Fs, dest, src string, p *plugin.Plugin) error {
 		return err
 	}
 
-	if isDir, _ := afero.IsDir(fs, src); !isDir { // nolint: errcheck
+	if isDir, _ := afero.IsDir(fs, src); !isDir { //nolint: errcheck
 		dest = filepath.Join(dest, p.Name)
 	}
 

@@ -6,11 +6,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/nhatthm/aferomock"
 	fsCtx "github.com/nhatthm/plugin-registry/context"
 	"github.com/nhatthm/plugin-registry/plugin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"go.nhat.io/aferomock"
 )
 
 func TestIsZipPlugin(t *testing.T) {

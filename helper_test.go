@@ -7,11 +7,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/nhatthm/aferomock"
 	"github.com/spf13/afero"
 	"github.com/spf13/afero/mem"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"go.nhat.io/aferomock"
 )
 
 func newEmptyFile(name string) *mem.File {
@@ -26,8 +26,8 @@ func newShadowedFile(name string, source string) *mem.File {
 		panic(err)
 	}
 
-	_, _ = f.Write(data)           // nolint: errcheck
-	_, _ = f.Seek(0, io.SeekStart) // nolint: errcheck
+	_, _ = f.Write(data)           //nolint: errcheck
+	_, _ = f.Seek(0, io.SeekStart) //nolint: errcheck
 
 	return f
 }
@@ -143,6 +143,7 @@ func TestInstallFile_OpenFail(t *testing.T) {
 	t.Parallel()
 
 	fs := aferomock.MockFs(func(fs *aferomock.Fs) {
+		//nolint: nosnakecase
 		fs.On("OpenFile", "/tmp/temp.txt", os.O_CREATE|os.O_RDWR, os.FileMode(0o755)).
 			Return(nil, errors.New("open error"))
 	})(t)

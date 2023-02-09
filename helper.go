@@ -29,7 +29,7 @@ func statPlugin(fs afero.Fs, path string) (os.FileInfo, error) {
 	return fi, nil
 }
 
-func openPluginFile(fs afero.Fs, path string) (os.FileInfo, afero.File, error) {
+func openPluginFile(fs afero.Fs, path string) (os.FileInfo, afero.File, error) { //nolint: ireturn
 	fi, err := fs.Stat(path)
 	if err != nil {
 		return nil, nil, err

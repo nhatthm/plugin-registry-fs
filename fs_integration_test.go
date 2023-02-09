@@ -1,3 +1,4 @@
+//go:build integration
 // +build integration
 
 package fs_test
@@ -67,7 +68,7 @@ func TestFsInstaller_Install_Success(t *testing.T) {
 
 			info, err := osFs.Stat(file)
 			require.NoError(t, err)
-			assert.Equal(t, os.FileMode(0755), info.Mode())
+			assert.Equal(t, os.FileMode(0o755), info.Mode())
 
 			data, err := afero.ReadFile(osFs, file)
 			require.NoError(t, err)
