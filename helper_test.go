@@ -38,7 +38,7 @@ func TestMetadataError(t *testing.T) {
 	err := metadataError(errors.New("error"), "/tmp")
 	expected := `plugin has no metadata: error`
 
-	assert.EqualError(t, err, expected)
+	require.EqualError(t, err, expected)
 }
 
 func TestCreatePathIfNotExists(t *testing.T) {
@@ -87,9 +87,9 @@ func TestCreatePathIfNotExists(t *testing.T) {
 			err := createPathIfNotExists(tc.mockFs(t), "/tmp")
 
 			if tc.expectedError == "" {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 			} else {
-				assert.EqualError(t, err, tc.expectedError)
+				require.EqualError(t, err, tc.expectedError)
 			}
 		})
 	}
@@ -131,9 +131,9 @@ func TestRecreatePath(t *testing.T) {
 			err := recreatePath(tc.mockFs(t), "/tmp")
 
 			if tc.expectedError == "" {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 			} else {
-				assert.EqualError(t, err, tc.expectedError)
+				require.EqualError(t, err, tc.expectedError)
 			}
 		})
 	}
@@ -151,7 +151,7 @@ func TestInstallFile_OpenFail(t *testing.T) {
 	err := installStream(fs, "/tmp/temp.txt", nil, os.FileMode(0o755))
 	expected := `open error`
 
-	assert.EqualError(t, err, expected)
+	require.EqualError(t, err, expected)
 }
 
 func TestInstallFile_Success(t *testing.T) {

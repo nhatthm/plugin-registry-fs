@@ -10,6 +10,7 @@ import (
 	"github.com/nhatthm/plugin-registry/plugin"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"github.com/stretchr/testify/require"
 	"go.nhat.io/aferomock"
 )
 
@@ -210,9 +211,9 @@ func TestParseFsPlugin(t *testing.T) {
 			assert.Equal(t, tc.expectedPlugin, p)
 
 			if tc.expectedError == "" {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 			} else {
-				assert.EqualError(t, err, tc.expectedError)
+				require.EqualError(t, err, tc.expectedError)
 			}
 		})
 	}
@@ -337,7 +338,7 @@ func TestFsInstaller_Install_Error(t *testing.T) {
 			result, err := i.Install(context.Background(), "/app/plugins", "/tmp")
 
 			assert.Nil(t, result)
-			assert.EqualError(t, err, tc.expectedError)
+			require.EqualError(t, err, tc.expectedError)
 		})
 	}
 }
