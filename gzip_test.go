@@ -35,9 +35,11 @@ func TestIsGzipPlugin(t *testing.T) {
 			scenario: "path is a directory",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 			}),
 			path: "/tmp",
 		},
@@ -45,10 +47,14 @@ func TestIsGzipPlugin(t *testing.T) {
 			scenario: "file is not a gzip",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random"
+						},
+					}, nil)
 			}),
 			path: "/tmp/random",
 		},
@@ -56,10 +62,14 @@ func TestIsGzipPlugin(t *testing.T) {
 			scenario: "metadata does not exist",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random.gz").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.gz")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.gz"
+						},
+					}, nil)
 
 				fs.On("Stat", "/tmp/.plugin.registry.yaml").
 					Return(nil, os.ErrNotExist)
@@ -70,13 +80,17 @@ func TestIsGzipPlugin(t *testing.T) {
 			scenario: "success with .gz",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random.gz").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.gz")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.gz"
+						},
+					}, nil)
 
 				fs.On("Stat", "/tmp/.plugin.registry.yaml").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.FileInfoCallbacks{}, nil)
 			}),
 			path:     "/tmp/random.gz",
 			expected: true,
@@ -85,13 +99,17 @@ func TestIsGzipPlugin(t *testing.T) {
 			scenario: "success with .tar.gz",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random.tar.gz").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.tar.gz")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.tar.gz"
+						},
+					}, nil)
 
 				fs.On("Stat", "/tmp/.plugin.registry.yaml").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.FileInfoCallbacks{}, nil)
 			}),
 			path:     "/tmp/random.tar.gz",
 			expected: true,
@@ -134,9 +152,11 @@ func TestParseGzipPath(t *testing.T) {
 			scenario: "path is a directory",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 			}),
 			path:          "/tmp",
 			expectedError: "plugin is a directory",
@@ -145,10 +165,14 @@ func TestParseGzipPath(t *testing.T) {
 			scenario: "file is not a gzip",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random"
+						},
+					}, nil)
 			}),
 			path:          "/tmp/random",
 			expectedError: "plugin is not a gzip",
@@ -157,10 +181,14 @@ func TestParseGzipPath(t *testing.T) {
 			scenario: "metadata does not exist",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random.gz").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.gz")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.gz"
+						},
+					}, nil)
 
 				fs.On("Stat", "/tmp/.plugin.registry.yaml").
 					Return(nil, os.ErrNotExist)
@@ -172,13 +200,17 @@ func TestParseGzipPath(t *testing.T) {
 			scenario: "success with .gz",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random.gz").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.gz")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.gz"
+						},
+					}, nil)
 
 				fs.On("Stat", "/tmp/.plugin.registry.yaml").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.FileInfoCallbacks{}, nil)
 			}),
 			path:                 "/tmp/random.gz",
 			expectedPath:         "/tmp/random.gz",
@@ -188,13 +220,17 @@ func TestParseGzipPath(t *testing.T) {
 			scenario: "success with .tar.gz",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random.tar.gz").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.tar.gz")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.tar.gz"
+						},
+					}, nil)
 
 				fs.On("Stat", "/tmp/.plugin.registry.yaml").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.FileInfoCallbacks{}, nil)
 			}),
 			path:                 "/tmp/random.tar.gz",
 			expectedPath:         "/tmp/random.tar.gz",
@@ -241,13 +277,17 @@ func TestGZipInstaller_Install_Error(t *testing.T) {
 			scenario: "could not load metadata",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/my-plugin.tar.gz").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.tar.gz")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.tar.gz"
+						},
+					}, nil)
 
 				fs.On("Stat", "/tmp/.plugin.registry.yaml").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.FileInfoCallbacks{}, nil)
 
 				fs.On("Open", "/tmp/.plugin.registry.yaml").
 					Return(nil, errors.New("could not open file"))
@@ -258,10 +298,14 @@ func TestGZipInstaller_Install_Error(t *testing.T) {
 			scenario: "could not install",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/my-plugin.tar.gz").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.tar.gz")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.tar.gz"
+						},
+					}, nil)
 
 				f := newShadowedFile(".plugin.registry.yaml", "resources/fixtures/gzip/.plugin.registry.yaml")
 
@@ -314,7 +358,7 @@ func TestInstallGzip_Error(t *testing.T) {
 			scenario: "could not open file",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/my-plugin.tar.gz").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.FileInfoCallbacks{}, nil)
 
 				fs.On("Open", "/tmp/my-plugin.tar.gz").
 					Return(nil, errors.New("open error"))
@@ -326,9 +370,11 @@ func TestInstallGzip_Error(t *testing.T) {
 			scenario: "not a valid gzip file",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/my-plugin.tar.gz").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("Size").Return(10)
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						SizeFunc: func() int64 {
+							return 10
+						},
+					}, nil)
 
 				fs.On("Open", "/tmp/my-plugin.tar.gz").
 					Return(newEmptyFile("my-plugin.tar.gz"), nil)

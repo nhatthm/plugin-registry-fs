@@ -119,7 +119,7 @@ func extractTar(fs afero.Fs, dst, pluginDir string, tr *tar.Reader) error {
 			}
 
 		case tar.TypeReg:
-			if err = installStream(fs, path, tr, os.FileMode(header.Mode)); err != nil {
+			if err = installStream(fs, path, tr, os.FileMode(header.Mode)); err != nil { //nolint: gosec
 				return err
 			}
 		}

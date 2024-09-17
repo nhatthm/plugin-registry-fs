@@ -33,19 +33,22 @@ func TestIsFsPlugin(t *testing.T) {
 			scenario: "path is a not directory",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+					}, nil)
 			}),
 		},
 		{
 			scenario: "metadata does not exist",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-						i.On("Name").Return("random")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 
 				fs.On("Open", "/tmp/.plugin.registry.yaml").
 					Return(nil, os.ErrNotExist)
@@ -57,10 +60,11 @@ func TestIsFsPlugin(t *testing.T) {
 				file := newShadowedFile(".plugin.registry.yaml", "resources/fixtures/fs/file/.plugin.registry.yaml")
 
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-						i.On("Name").Return("random")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 
 				fs.On("Open", "/tmp/.plugin.registry.yaml").
 					Return(file, nil)
@@ -75,16 +79,17 @@ func TestIsFsPlugin(t *testing.T) {
 				file := newShadowedFile(".plugin.registry.yaml", "resources/fixtures/fs/file/.plugin.registry.yaml")
 
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-						i.On("Name").Return("random")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 
 				fs.On("Open", "/tmp/.plugin.registry.yaml").
 					Return(file, nil)
 
 				fs.On("Stat", "/tmp/my-plugin").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.NopFileInfo(t), nil)
 			}),
 			expected: true,
 		},
@@ -126,9 +131,11 @@ func TestParseFsPlugin(t *testing.T) {
 			scenario: "path is a not directory",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+					}, nil)
 			}),
 			path:          "/tmp",
 			expectedError: "plugin is not a directory",
@@ -137,10 +144,11 @@ func TestParseFsPlugin(t *testing.T) {
 			scenario: "metadata does not exist",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-						i.On("Name").Return("random")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 
 				fs.On("Open", "/tmp/.plugin.registry.yaml").
 					Return(nil, os.ErrNotExist)
@@ -154,10 +162,11 @@ func TestParseFsPlugin(t *testing.T) {
 				file := newShadowedFile(".plugin.registry.yaml", "resources/fixtures/fs/file/.plugin.registry.yaml")
 
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-						i.On("Name").Return("random")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 
 				fs.On("Open", "/tmp/.plugin.registry.yaml").
 					Return(file, nil)
@@ -174,16 +183,17 @@ func TestParseFsPlugin(t *testing.T) {
 				file := newShadowedFile(".plugin.registry.yaml", "resources/fixtures/fs/file/.plugin.registry.yaml")
 
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-						i.On("Name").Return("random")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 
 				fs.On("Open", "/tmp/.plugin.registry.yaml").
 					Return(file, nil)
 
 				fs.On("Stat", "/tmp/my-plugin").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.NopFileInfo(t), nil)
 			}),
 			path:         "/tmp",
 			expectedPath: "/tmp",
@@ -239,10 +249,11 @@ func TestFsInstaller_Install_Error(t *testing.T) {
 			scenario: "could not load metadata",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-						i.On("Name").Return("tmp")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 
 				fs.On("Open", "/tmp/.plugin.registry.yaml").
 					Return(nil, errors.New("could not open file"))
@@ -255,16 +266,17 @@ func TestFsInstaller_Install_Error(t *testing.T) {
 				file := newShadowedFile(".plugin.registry.yaml", "resources/fixtures/fs/file/.plugin.registry.yaml")
 
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-						i.On("Name").Return("tmp")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 
 				fs.On("Open", "/tmp/.plugin.registry.yaml").
 					Return(file, nil)
 
 				fs.On("Stat", "/tmp/my-plugin").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.NopFileInfo(t), nil)
 
 				fs.On("RemoveAll", mock.Anything).
 					Return(errors.New("remove error"))
@@ -277,16 +289,17 @@ func TestFsInstaller_Install_Error(t *testing.T) {
 				file := newShadowedFile(".plugin.registry.yaml", "resources/fixtures/fs/file/.plugin.registry.yaml")
 
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-						i.On("Name").Return("tmp")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 
 				fs.On("Open", "/tmp/.plugin.registry.yaml").
 					Return(file, nil)
 
 				fs.On("Stat", "/tmp/my-plugin").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.NopFileInfo(t), nil)
 
 				fs.On("RemoveAll", mock.Anything).
 					Return(nil)
@@ -302,19 +315,17 @@ func TestFsInstaller_Install_Error(t *testing.T) {
 				file := newShadowedFile(".plugin.registry.yaml", "resources/fixtures/fs/file/.plugin.registry.yaml")
 
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-						i.On("Name").Return("tmp")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 
 				fs.On("Open", "/tmp/.plugin.registry.yaml").
 					Return(file, nil)
 
 				fs.On("Stat", "/tmp/my-plugin").Once().
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-						i.On("Name").Return("my-plugin")
-					}), nil)
+					Return(aferomock.NopFileInfo(t), nil)
 
 				fs.On("RemoveAll", mock.Anything).
 					Return(nil)
