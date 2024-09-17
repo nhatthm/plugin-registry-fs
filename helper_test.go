@@ -53,7 +53,7 @@ func TestCreatePathIfNotExists(t *testing.T) {
 			scenario: "directory exists",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.FileInfoCallbacks{}, nil)
 			}),
 		},
 		{

@@ -35,9 +35,11 @@ func TestIsZipPlugin(t *testing.T) {
 			scenario: "path is a directory",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 			}),
 			path: "/tmp",
 		},
@@ -45,10 +47,14 @@ func TestIsZipPlugin(t *testing.T) {
 			scenario: "file is not a zip",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random"
+						},
+					}, nil)
 			}),
 			path: "/tmp/random",
 		},
@@ -56,10 +62,14 @@ func TestIsZipPlugin(t *testing.T) {
 			scenario: "metadata does not exist",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random.zip").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.zip")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.zip"
+						},
+					}, nil)
 
 				fs.On("Stat", "/tmp/.plugin.registry.yaml").
 					Return(nil, os.ErrNotExist)
@@ -70,13 +80,17 @@ func TestIsZipPlugin(t *testing.T) {
 			scenario: "success",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random.zip").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.zip")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.zip"
+						},
+					}, nil)
 
 				fs.On("Stat", "/tmp/.plugin.registry.yaml").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.FileInfoCallbacks{}, nil)
 			}),
 			path:     "/tmp/random.zip",
 			expected: true,
@@ -119,9 +133,11 @@ func TestParseZipPath(t *testing.T) {
 			scenario: "path is a directory",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(true)
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return true
+						},
+					}, nil)
 			}),
 			path:          "/tmp",
 			expectedError: "plugin is a directory",
@@ -130,10 +146,14 @@ func TestParseZipPath(t *testing.T) {
 			scenario: "file is not a zip",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random"
+						},
+					}, nil)
 			}),
 			path:          "/tmp/random",
 			expectedError: "plugin is not a zip",
@@ -142,10 +162,14 @@ func TestParseZipPath(t *testing.T) {
 			scenario: "metadata does not exist",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random.zip").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.zip")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.zip"
+						},
+					}, nil)
 
 				fs.On("Stat", "/tmp/.plugin.registry.yaml").
 					Return(nil, os.ErrNotExist)
@@ -157,13 +181,17 @@ func TestParseZipPath(t *testing.T) {
 			scenario: "success",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/random.zip").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.zip")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.zip"
+						},
+					}, nil)
 
 				fs.On("Stat", "/tmp/.plugin.registry.yaml").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.FileInfoCallbacks{}, nil)
 			}),
 			path:                 "/tmp/random.zip",
 			expectedPath:         "/tmp/random.zip",
@@ -210,13 +238,17 @@ func TestZipInstaller_Install_Error(t *testing.T) {
 			scenario: "could not load metadata",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/my-plugin.zip").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.zip")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.zip"
+						},
+					}, nil)
 
 				fs.On("Stat", "/tmp/.plugin.registry.yaml").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.FileInfoCallbacks{}, nil)
 
 				fs.On("Open", "/tmp/.plugin.registry.yaml").
 					Return(nil, errors.New("could not open file"))
@@ -227,10 +259,14 @@ func TestZipInstaller_Install_Error(t *testing.T) {
 			scenario: "could not install",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/my-plugin.zip").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("IsDir").Return(false)
-						i.On("Name").Return("random.zip")
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						IsDirFunc: func() bool {
+							return false
+						},
+						NameFunc: func() string {
+							return "random.zip"
+						},
+					}, nil)
 
 				f := newShadowedFile(".plugin.registry.yaml", "resources/fixtures/zip/.plugin.registry.yaml")
 
@@ -283,7 +319,7 @@ func TestInstallZip_Error(t *testing.T) {
 			scenario: "could not open file",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/my-plugin.zip").
-					Return(aferomock.NewFileInfo(), nil)
+					Return(aferomock.FileInfoCallbacks{}, nil)
 
 				fs.On("Open", "/tmp/my-plugin.zip").
 					Return(nil, errors.New("open error"))
@@ -295,9 +331,11 @@ func TestInstallZip_Error(t *testing.T) {
 			scenario: "could not open zip",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/my-plugin.zip").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("Size").Return(-1)
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						SizeFunc: func() int64 {
+							return -1
+						},
+					}, nil)
 
 				fs.On("Open", "/tmp/my-plugin.zip").
 					Return(newEmptyFile("my-plugin.zip"), nil)
@@ -309,9 +347,11 @@ func TestInstallZip_Error(t *testing.T) {
 			scenario: "not a valid zip file",
 			mockFs: aferomock.MockFs(func(fs *aferomock.Fs) {
 				fs.On("Stat", "/tmp/my-plugin.zip").
-					Return(aferomock.NewFileInfo(func(i *aferomock.FileInfo) {
-						i.On("Size").Return(10)
-					}), nil)
+					Return(aferomock.FileInfoCallbacks{
+						SizeFunc: func() int64 {
+							return 10
+						},
+					}, nil)
 
 				fs.On("Open", "/tmp/my-plugin.zip").
 					Return(newEmptyFile("my-plugin.zip"), nil)
