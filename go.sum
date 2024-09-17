@@ -1377,8 +1377,8 @@ github.com/mattn/go-sqlite3 v1.14.14/go.mod h1:NyWgC/yNuGj7Q9rpYnZvas74GogHl5/Z4
 github.com/mattn/go-sqlite3 v1.14.15/go.mod h1:2eHXhiwb8IkHr+BDWZGa96P6+rkvnG63S2DGjv9HUNg=
 github.com/minio/asm2plan9s v0.0.0-20200509001527-cdd76441f9d8/go.mod h1:mC1jAcsrzbxHt8iiaC+zU4b1ylILSosueou12R++wfY=
 github.com/minio/c2goasm v0.0.0-20190812172519-36a3d3bbc4f3/go.mod h1:RagcQ7I8IeTMnF8JTXieKnO4Z6JCsikNEzj0DwauVzE=
-github.com/nhatthm/plugin-registry v0.3.0 h1:fLOTO2L6fM+A+ZjeatSTsVSzMAO/Kfa1P06qWYqbWRk=
-github.com/nhatthm/plugin-registry v0.3.0/go.mod h1:TRB1LAGDLUUnXilsKp6v2INjf3AWJiZVgAOmdB7mNbs=
+github.com/nhatthm/plugin-registry v0.4.0 h1:bfffKcsjAJps3uwlWzQ5/eQClA9a92P8udJKsM2eOzE=
+github.com/nhatthm/plugin-registry v0.4.0/go.mod h1:49J/oX7aAz+2IazbKdpXd6qoN3qZ2zXxV7WveR1ltek=
 github.com/phpdave11/gofpdf v1.4.2/go.mod h1:zpO6xFn9yxo3YLyMvW8HcKWVdbNqgIfOOp2dXMnm1mY=
 github.com/phpdave11/gofpdi v1.0.12/go.mod h1:vBmVV0Do6hSBHC8uKUQ71JGW+ZGQq74llk/7bXwjDoI=
 github.com/phpdave11/gofpdi v1.0.13/go.mod h1:vBmVV0Do6hSBHC8uKUQ71JGW+ZGQq74llk/7bXwjDoI=
@@ -1409,7 +1409,6 @@ github.com/spaolacci/murmur3 v0.0.0-20180118202830-f09979ecbc72/go.mod h1:JwIasO
 github.com/spf13/afero v1.3.3/go.mod h1:5KUK8ByomD5Ti5Artl0RtHeI5pTF7MIDuXL3yY520V4=
 github.com/spf13/afero v1.6.0/go.mod h1:Ai8FlHk4v/PARR026UzYexafAt9roJ7LcLMAmO6Z93I=
 github.com/spf13/afero v1.9.2/go.mod h1:iUV7ddyEEZPO5gA3zD4fJt6iStLlL+Lg4m2cihcDf8Y=
-github.com/spf13/afero v1.9.3/go.mod h1:iUV7ddyEEZPO5gA3zD4fJt6iStLlL+Lg4m2cihcDf8Y=
 github.com/spf13/afero v1.11.0 h1:WJQKhtpdm3v2IzqG8VMqrr6Rf3UYpEF239Jy9wNepM8=
 github.com/spf13/afero v1.11.0/go.mod h1:GH9Y3pIexgf1MTIWtNGyogA5MwRIDXGUr+hbWNoBjkY=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
@@ -1441,10 +1440,8 @@ github.com/yuin/goldmark v1.4.1/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 github.com/zeebo/assert v1.3.0/go.mod h1:Pq9JiuJQpG8JLJdtkwrJESF0Foym2/D9XMU5ciN/wJ0=
 github.com/zeebo/xxh3 v1.0.2/go.mod h1:5NWz9Sef7zIDm2JHfFlcQvNekmcEl9ekUZQQKCYaDcA=
-go.nhat.io/aferocopy/v2 v2.0.0/go.mod h1:Nyd1b35gqLm279GSd7OOVS3qBGcRAIaJ/rsZCGENtD0=
 go.nhat.io/aferocopy/v2 v2.0.2 h1:mph9gmJ3rHqt2jScCPq8C8yCyg7tN7omaYA+/PYKQKY=
 go.nhat.io/aferocopy/v2 v2.0.2/go.mod h1:DC6XT85TSk0Vjok0leKynMB+6NKXR5FD6EUWeh6EyGA=
-go.nhat.io/aferomock v0.4.0/go.mod h1:msi5MDOtJ/AroUa/lDc3jVGOILM4SKP//4yBRImOvkI=
 go.nhat.io/aferomock v0.6.0/go.mod h1:DexRX1DiNRZwfGYrMdC5zjA09Mw95LrfYceLBlPZd5Y=
 go.nhat.io/aferomock v0.7.0 h1:jip7tIX2Vt3M54mE9PTYMOrTN/IMZqlcpCMyIr/XFEc=
 go.nhat.io/aferomock v0.7.0/go.mod h1:DexRX1DiNRZwfGYrMdC5zjA09Mw95LrfYceLBlPZd5Y=
