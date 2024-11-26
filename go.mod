@@ -6,7 +6,7 @@ require (
 	github.com/bool64/ctxd v1.2.1
 	github.com/nhatthm/plugin-registry v0.4.0
 	github.com/spf13/afero v1.11.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	go.nhat.io/aferocopy/v2 v2.0.2
 	go.nhat.io/aferomock v0.7.0
 )
